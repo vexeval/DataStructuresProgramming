@@ -11,6 +11,7 @@ public:
 
     int data;
     SLLNode *next; // ptr to the next node
+    SLLNode *prev;
 };
 
 #endif

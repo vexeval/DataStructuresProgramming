@@ -7,6 +7,11 @@ int main(void)
     H.push_front(19);
     H.push_front(21);
     H.push_front(68);
+    H.push_back(985);
+    H.push_back(915);
     H.print();
-    return 19;
+    H.pop_front();
+    H.print();
+    
+    return 0;
 }

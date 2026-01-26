@@ -4,7 +4,13 @@
 SLList::SLList()
 {
     head = nullptr;
+    tail = nullptr;
     list_size = 0;
+}
+
+SLList::~SLList()
+{
+    clear();
 }
 
 unsigned SLList::size() const
@@ -24,6 +30,7 @@ void SLList::push_front(int val)
     // head = new_node;
     head = new SLLNode(val, head);
     list_size++;
+    if (size() == 1) tail = head;
 }
 
 void SLList::print() const
@@ -39,12 +46,49 @@ void SLList::print() const
     std::cout << " }\n";
 }
 
-// TODO
 void SLList::push_back(int val)
 {
-    SLLNode* newNode = new SLLNode(val, nullptr);
-    if (head == nullptr)
+    if (empty())
     {
-        head = newNode;
+        push_front(val);
+        return;
     }
+    tail->next = new SLLNode(val); // add node to the end
+    tail = tail->next; // move tail
+
+    list_size++;
+}
+
+void SLList::pop_front()
+{
+    if (empty()) return;
+
+    SLLNode *prev_head = head;
+    head = head->next;
+    delete prev_head;
+    list_size--;
+    if (empty()) tail = head;
+}
+
+void SLList::pop_back()
+{
+    if (empty()) return;
+
+    SLLNode* cur = head;
+
+    for (int i = 0; i < list_size; i++)
+    {
+        // TODO WIP
+    }
+}
+
+void SLList::clear()
+{
+    while (!empty())
+        pop_front();
+}
+
+SLList& SLList::operator=(const SLList& other)
+{
+    
 }
