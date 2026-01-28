@@ -1,0 +1,31 @@
+#ifndef DLList_H
+#define DLList_H
+#include "DLLNode.hpp"
+
+class DLList {
+public:
+    DLList(); // no-arg constructor
+    // DLList(const DLList& other);  // copy constructor
+    // DLList& operator=(const DLList& other); // assignment operator // TODO
+    // ~DLList(); // destructor
+
+    // unsigned size() const;
+    // bool empty() const;
+    void push_front(int val); // Insert the new node at the beginning
+    // void push_back(int val); // Insert the new node at the end
+    // void pop_front(); // Remove the first element node
+    // void pop_back(); // Remove the last element node
+    // void insert(int position, int value);
+    // void erase(int position);
+    // void clear(); // Clear the list
+    void print() const;
+private:
+    DLLNode* head; // ptr to first node
+    DLLNode* tail; // ptr to last node
+    unsigned list_size;
+
+};
+
+#endif
+
+// WIP

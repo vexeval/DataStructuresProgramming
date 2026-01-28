@@ -1,6 +1,13 @@
 #include "SLList.hpp"
 #include <iostream>
 
+void test(SLList list) {
+    // Test copy constructor and operator=
+    SLList l2;
+    l2 = list;
+    l2.print();
+}
+
 int main(void)
 {
     SLList H;
@@ -12,6 +19,14 @@ int main(void)
     H.print();
     H.pop_front();
     H.print();
+    std::cout << "====\n";
+
+    test(H);
+
+    while (!H.empty()) {
+        H.pop_back();
+        H.print();
+    }
     
     return 0;
 }

@@ -1,26 +1,29 @@
 #include "SLList.hpp"
 #include <iostream>
 
-SLList::SLList()
+template <typename T>
+SLList<T>::SLList()
 {
     head = nullptr;
     tail = nullptr;
     list_size = 0;
 }
 
-SLList::~SLList()
+template <typename T>
+SLList<T>::~SLList()
 {
     clear();
 }
 
-SLList::SLList(const SLList& other)
+template <typename T>
+SLList<T>::SLList(const SLList<T>& other)
 {
     head = nullptr;
     tail = nullptr;
     list_size = 0;
 
     // iterate through other list and add its values
-    SLLNode* cur = other.head;
+    SLLNode<T>* cur = other.head;
     while (cur != nullptr)
     {
         push_back(cur->data);
@@ -28,13 +31,14 @@ SLList::SLList(const SLList& other)
     }
 }
 
-SLList& SLList::operator=(const SLList& other)
+template <typename T>
+SLList<T>& SLList<T>::operator=(const SLList<T>& other)
 {
     if (this != &other)
     {
         clear(); // clean
         // copy
-        SLLNode* cur = other.head;
+        SLLNode<T>* cur = other.head;
         while (cur != nullptr)
         {
             push_back(cur->data);
@@ -45,30 +49,34 @@ SLList& SLList::operator=(const SLList& other)
     return *this;
 }
 
-unsigned SLList::size() const
+template <typename T>
+unsigned SLList<T>::size() const
 {
     return list_size;
 }
 
-bool SLList::empty() const
+template <typename T>
+bool SLList<T>::empty() const
 {
     return (size() == 0);
 }
 
-void SLList::push_front(int val)
+template <typename T>
+void SLList<T>::push_front(T val)
 {
     // SLLNode* new_node = new SLLNode(val);
     // new_node->next = head;
     // head = new_node;
-    head = new SLLNode(val, head);
+    head = new SLLNode<T>(val, head);
     list_size++;
     if (size() == 1) tail = head;
 }
 
-void SLList::print() const
+template <typename T>
+void SLList<T>::print() const
 {
     std::cout << "{ ";
-    SLLNode* cur = head;
+    SLLNode<T>* cur = head;
     while (cur)
     {
         std::cout << cur->data;
@@ -78,31 +86,34 @@ void SLList::print() const
     std::cout << " }\n";
 }
 
-void SLList::push_back(int val)
+template <typename T>
+void SLList<T>::push_back(const T& val)
 {
     if (empty())
     {
         push_front(val);
         return;
     }
-    tail->next = new SLLNode(val); // add node to the end
+    tail->next = new SLLNode<T>(val); // add node to the end
     tail = tail->next; // move tail
 
     list_size++;
 }
 
-void SLList::pop_front()
+template <typename T>
+void SLList<T>::pop_front()
 {
     if (empty()) return;
 
-    SLLNode *prev_head = head;
+    SLLNode<T> *prev_head = head;
     head = head->next;
     delete prev_head;
     list_size--;
     if (empty()) tail = head;
 }
 
-void SLList::pop_back()
+template <typename T>
+void SLList<T>::pop_back()
 {
     if (empty()) return;
 
@@ -115,7 +126,7 @@ void SLList::pop_back()
     }
     else // more than one node
     {
-        SLLNode* cur = head;
+        SLLNode<T>* cur = head;
         // move till cur is second to last node
         while (cur->next != tail)
         {
@@ -129,13 +140,15 @@ void SLList::pop_back()
     }
 }
 
-void SLList::clear()
+template <typename T>
+void SLList<T>::clear()
 {
     while (!empty())
         pop_front();
 }
 
-void SLList::insert(int position, int value)
+template <typename T>
+void SLList<T>::insert(int position, T& value)
 {
     // TODO
     // do not insert if pos > list size
@@ -145,7 +158,8 @@ void SLList::insert(int position, int value)
 
 }
 
-void SLList::erase(int position)
+template <typename T>
+void SLList<T>::erase(int position)
 {
     // TODO
     // Do not erase if pos >= list size
