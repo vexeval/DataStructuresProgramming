@@ -11,10 +11,11 @@ public:
     // ~DLList(); // destructor
 
     // unsigned size() const;
-    // bool empty() const;
+    bool empty() const;
     void push_front(const T& val); // Insert the new node at the beginning
-    // void push_back(int val); // Insert the new node at the end
-    // void pop_front(); // Remove the first element node
+    void push_back(const T& val); // Insert the new node at the end
+    void pop_front(); // Remove the first element node
+    void print_backwards() const;
     void pop_back(); // Remove the last element node
     // void insert(int position, int value);
     // void erase(int position);
