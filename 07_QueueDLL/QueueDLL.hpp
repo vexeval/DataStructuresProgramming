@@ -1,10 +1,11 @@
-#ifndef QUEUEARRAY_H
-#define QUEUEARRAY_H
+#ifndef QUEUEDLL_H
+#define QUEUEDLL_H
+#include "DLList.hpp"
 
-template <typename T, int size = 100>
-class QueueArray {
+template <typename T>
+class QueueDLL {
 public:
-    QueueArray();
+    QueueDLL();
     int length() const;
     bool empty() const;
     bool full() const;
@@ -17,10 +18,7 @@ public:
     const T& front(); // return the first element in the queue
 
 private:
-    T data[size]; // an array of <size> elements
-    unsigned queue_size;
-    int front_idx;
-    int back_idx;
+    DLList<T>* data;
 };
 
 #endif

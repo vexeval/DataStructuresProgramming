@@ -9,16 +9,13 @@ CLList<T>::CLList()
 }
 
 template <typename T>
-void CLList<T>::push_front(const T& val)
-{
-    if (empty())
-    {
+void CLList<T>::push_front(const T& val) {
+    if (empty()) {
         tail = new DLLNode<T>(val);
         tail->prev = tail;
         tail->next = tail;
     }
-    else
-    {
+    else {
         tail->next = new DLLNode<T>(val, tail, tail->next);
     }
     
