@@ -1,5 +1,6 @@
 #include "DLList.hpp"
 #include <iostream>
+#include <stdexcept>
 
 template <typename T>
 DLList<T>::DLList()
@@ -9,6 +10,12 @@ DLList<T>::DLList()
     head->next = tail;
     tail->prev = head;
     list_size = 0;
+}
+
+template <typename T>
+unsigned DLList<T>::size() const
+{
+    return list_size;
 }
 
 template <typename T>
@@ -102,3 +109,10 @@ void DLList<T>::push_back(const T& val)
     
     list_size++;
 }
+
+template <typename T>
+const T& DLList<T>::front() const
+{
+    if (empty()) throw std::out_of_range("Empty list");
+    return head->next->data;
+}   
