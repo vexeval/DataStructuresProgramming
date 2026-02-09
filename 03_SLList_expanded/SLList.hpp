@@ -16,8 +16,10 @@ public:
     void push_back(const T& val); // Insert the new node at the end
     void pop_front(); // Remove the first element node
     void pop_back(); // Remove the last element node
-    void insert(int position, T& value); // Insert value at position
-    void erase(int position);
+    void insert(unsigned position, const T& value, unsigned n = 1); // Insert value at position
+    void erase(unsigned position); // remove element from its position
+    void remove(const T& value); // remove value from list
+    void rotate_right(unsigned k);
     void clear(); // Clear the list
     void print() const;
 private:

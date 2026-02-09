@@ -148,24 +148,134 @@ void SLList<T>::clear()
 }
 
 template <typename T>
-void SLList<T>::insert(int position, T& value)
+void SLList<T>::insert(unsigned pos, const T& value, unsigned n)
 {
-    // TODO
-    // do not insert if pos > list size
-    // use push_front to insert at the beginning
-    // find the node before the specified pos
-    // insert the new node after the found node
+    if (pos > list_size || n == 0)
+        return;
+    
+    // insert at beginning
+    if (pos == 0)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            push_front(value);
+        }
+        return;
+    }
 
+    // inserting at middle or end. find point at pos - 1
+    SLLNode<T>* prev = head;
+    for (int i = 0; i < pos - 1; i++)
+    {
+        prev = prev->next;
+    }
+
+    // insert n nodes after prev
+    for (int i = 0; i < n; i++)
+    {
+        SLLNode<T>* newNode = new SLLNode<T>(value, prev->next);
+        prev->next = newNode;
+        if (prev == tail) // update if inserting at end
+            tail = newNode;
+
+        // advance prev
+        prev = newNode;
+        list_size++;
+    }
+}
+
+template<typename T>
+void SLList<T>::erase(unsigned pos)
+{
+    if (pos >= list_size)
+        return;
+    
+    // remove first el
+    if (pos == 0)
+    {
+        pop_front();
+        return;
+    }
+
+    // remove last el
+    if (pos == list_size - 1)
+    {
+        pop_back();
+        return;
+    }
+
+    // removing from middle
+    SLLNode<T>* prev = head;
+    // node before the one to be deleted
+    for (int i = 0; i < pos - 1; i++)
+    {
+        prev = prev->next;
+    }
+
+    SLLNode<T>* toDelete = prev->next;
+    prev->next = toDelete->next;
+
+    delete toDelete;
+    list_size--;
 }
 
 template <typename T>
-void SLList<T>::erase(int position)
+void SLList<T>::remove(const T& value)
 {
-    // TODO
-    // Do not erase if pos >= list size
-    // use pop_front
-    // find the node before the specified position
-    // update the next pointer of the found node with the next value of the next node
-    // release the memory
+    while (!empty() && head->data == value)
+    {
+        pop_front();
+    }
 
+    if (empty()) return;
+
+    // handle rest of list
+    SLLNode<T>* cur = head;
+
+    // look at next node
+    while (cur->next != nullptr)
+    {
+        if (cur->next->data == value)
+        {
+            SLLNode<T>* toDelete = cur->next;
+            cur->next = toDelete->next;
+
+            if (toDelete == tail)
+                tail = cur;
+            
+            delete toDelete;
+            list_size--;
+        }
+        else
+        {
+            // only move if nothing was deleted
+            cur = cur->next;
+        }
+    }
+}
+
+template<typename T>
+void SLList<T>::rotate_right(unsigned k)
+{
+    if (list_size < 2 || k == 0)
+        return;
+    
+    int moves = k % list_size; // only need to rotate k%size times if k > size
+    if (moves == 0)
+        return;
+    
+    tail->next = head;
+
+    // find new tail. rotating by moves means new tail is at (size-moves-1). from head, number of steps is (list_size - moves).
+    SLLNode<T>* newTail = head;
+    for (int i = 1; i < list_size - moves; i++)
+    {
+        newTail = newTail->next;
+    }
+
+    head = newTail->next;
+    tail = newTail;
+
+    // break circle
+    tail->next = nullptr;
 }
