@@ -59,3 +59,71 @@ const T& StackArray::Stack<T, size>::top() const
         return data[top_idx];
     }
 }
+
+// StackList Namespace
+
+template <typename T>
+StackList::Stack<T>::Stack() : top_node(nullptr) {}
+
+template <typename T>
+StackList::Stack<T>::~Stack()
+{
+    while (!empty())
+        pop();
+}
+
+template <typename T>
+void StackList::Stack<T>::push(const T& val)
+{
+    if (empty()) top_node = new Node<T>(val, nullptr);
+
+    Node<T> cur = new Node<T>(val, top_node->next);
+
+    while (cur->next != nullptr)
+    {
+        cur = cur->next;
+    }
+    cur->next = new Node<T>(val, nullptr);
+    
+}
+
+template <typename T>
+bool StackList::Stack<T>::empty() const
+{
+    return top_node == nullptr;
+}
+
+template <typename T>
+void StackList::Stack<T>::print() const
+{
+    Node<T>* cur = top_node;
+
+    while (cur->next != nullptr)
+    {
+        std::cout << cur->data;
+        cur = cur->next;
+        if (cur->next != nullptr) std::cout << " -> ";
+    }
+    std::cout << std::endl;
+}
+
+template <typename T>
+T StackList::Stack<T>::pop()
+{
+    if (empty()) {
+        throw std::out_of_range("Empty stack");
+    }
+    else {
+        Node<T>* old_head = top_node;
+        T popped_val = old_head->data;
+        top_node = top_node->next;
+        delete old_head;
+        return popped_val;
+    }
+}
+
+template <typename T>
+const T& StackList::Stack<T>::top() const
+{
+    return top_node->data;
+}

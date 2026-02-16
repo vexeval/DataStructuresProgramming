@@ -21,7 +21,7 @@ namespace StackArray {
 }
 
 namespace StackList {
-    template <typename T, int size = 10>
+    template <typename T>
     class Stack {
     public:
         Stack();
@@ -34,16 +34,16 @@ namespace StackList {
         const T& top() const;
     
     private:
-        template <typename T>
+        template <typename U>
         class Node {
             public:
-                T data;
-                Node<T>* next;
+                U data;
+                Node<U>* next;
                 Node(const T& val = T()) : data(val), next(nullptr) { };
         };
 
         Node<T>* top_node;
-        int top_idx;    // index of top of stack
+        // int top_idx;    // index of top of stack
     };
 }
 

@@ -6,7 +6,7 @@ template <typename T>
 class DLList {
 public:
     DLList(); // no-arg constructor
-    // DLList(const DLList& other);  // copy constructor
+    DLList(const DLList& other);  // copy constructor
     // DLList& operator=(const DLList& other); // assignment operator // TODO
     // ~DLList(); // destructor
 

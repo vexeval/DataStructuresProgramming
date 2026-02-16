@@ -13,6 +13,22 @@ DLList<T>::DLList()
 }
 
 template <typename T>
+DLList<T>::DLList(const DLList& other)
+{
+    head = nullptr;
+    tail = nullptr;
+    list_size = 0;
+
+    // iterate through other list and add its values
+    DLLNode<T>* cur = other.head;
+    while (cur != nullptr)
+    {
+        push_back(cur->data);
+        cur = cur->next;
+    }
+}
+
+template <typename T>
 unsigned DLList<T>::size() const
 {
     return list_size;
