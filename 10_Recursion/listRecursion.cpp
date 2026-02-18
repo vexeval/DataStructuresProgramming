@@ -4,15 +4,14 @@ class Node {
 public:
     int data;
     Node* next;
-    Node(int d = 0, Node* n = nullptr) : data(d), next(n) {
-
-    }
+    Node(int d = 0, Node* n = nullptr) : data(d), next(n) { }
 };
 
 void print_list(Node* head);
 void print_list_backwards(Node* head);
 Node* reverse_list(Node* head);
 Node* swap_pairs(Node* head); // TODO: w/o a temp variable
+Node* swap_helper(Node* first, Node* second);
 
 int main(void)
 {
@@ -21,12 +20,23 @@ int main(void)
     head->next = new Node(2);
     head->next->next = new Node(3);
     head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+    head->next->next->next->next->next = new Node(6);
+    head->next->next->next->next->next->next = new Node(7);
 
+    std::cout << "Base list: \t\t";
     print_list(head);
+
+    std::cout << "Printed backwards list: ";
     print_list_backwards(head);
-    std::cout << std::endl;
+    std::cout << "\n";
     
+    std::cout << "Actually reversed list: ";
     head = reverse_list(head);
+    print_list(head);
+    
+    std::cout << "Pair swapped list: \t";
+    head = swap_pairs(head);
     print_list(head);
 
     return 0;
@@ -61,4 +71,19 @@ Node* reverse_list(Node* head)
     head->next->next = head;
     head->next = nullptr;
     return p;
+}
+
+Node* swap_pairs(Node* head)
+{
+    if (!head || !head->next) 
+        return head;
+
+    return swap_helper(head, head->next);
+}
+
+Node* swap_helper(Node* first, Node* second)
+{
+    first->next = swap_pairs(second->next); // link first node to result of the swap of remaining list
+    second->next = first;
+    return second; // return second node as new head of this pair
 }
