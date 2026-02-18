@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 class Node {
 public:
@@ -10,8 +11,10 @@ public:
 void print_list(Node* head);
 void print_list_backwards(Node* head);
 Node* reverse_list(Node* head);
-Node* swap_pairs(Node* head); // TODO: w/o a temp variable
+Node* swap_pairs(Node* head);
 Node* swap_helper(Node* first, Node* second);
+
+void backtrack(std::vector<Node*>& nodes, int index);
 
 int main(void)
 {
@@ -86,4 +89,51 @@ Node* swap_helper(Node* first, Node* second)
     first->next = swap_pairs(second->next); // link first node to result of the swap of remaining list
     second->next = first;
     return second; // return second node as new head of this pair
+}
+
+// Node* alt_swap(Node* head)
+// {
+//     if (!head || !head->next)
+//         return head;
+
+//     Node* nextPair = head->next->next;
+//     head->next->next = head;
+//     head = head->next;
+//     head->next->next = alt_swap(nextPair);
+//     return head;
+// }
+
+// void printAllPermutations(Node* head) // WIP
+// {
+//     std::vector<Node*> nodes;
+
+//     while (head)
+//     {
+//         nodes.push_back(head->next);
+//     }
+// }
+
+void backtrack(std::vector<Node*>& nodes, int index)
+{
+    if (index == nodes.size())
+    {
+        // current perm
+        for (auto node : nodes)
+            std::cout << node->data << ' ';
+        
+        std::cout << std::endl;
+        return;
+    }
+
+    for (int i = index; i < nodes.size(); ++i)
+    {
+        // choose
+        std::swap(nodes[index], nodes[i]);
+
+        // explore
+        backtrack(nodes, index + 1);
+
+        // un-choose (backtrack)
+        std::swap(nodes[index], nodes[i]);
+    }
 }
