@@ -29,5 +29,21 @@ int main(void)
     std::cout << "Height/Furthest Depth: " << binaryST->getFurthestDepth() << '\n';
     binaryST->display();
 
+    BST<int> tree;
+    tree.insert_recursive(4);
+    tree.insert_recursive(8);
+    tree.insert_recursive(3);
+    tree.insert_recursive(7);
+
+    // TODO test isFullTree
+    // TODO search_parent (return address of the parent of node)
+
+    BTNode<int>* node = tree.search(4);
+    if (node) {
+        std::cout << "Found\n";
+    } else {
+        std::cout << "Not Found\n";
+    }
+
     return 0;
 }

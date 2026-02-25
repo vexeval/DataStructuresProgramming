@@ -42,6 +42,29 @@ void BST<T>::insert(const T& val)
 }
 
 template <typename T>
+BTNode<T>* BST<T>::insert_recursive(const T& val) {
+    root = insert_recursive(root, val);
+    return root;
+}
+
+template <typename T>
+BTNode<T>* BST<T>::insert_recursive(BTNode<T>* node, const T& val)
+{
+    if (!node) {
+        return new BTNode<T>(val);
+    }
+    
+    if (val > node->data) {
+        node->right = insert_recursive(node->right, val);
+        return node;
+    }
+    else {
+        node->left = insert_recursive(node->left, val);
+        return node;
+    }
+}
+
+template <typename T>
 void BST<T>::inorder() const
 {
     std::cout << "Inorder: [";
@@ -58,18 +81,6 @@ void BST<T>::inorder(BTNode<T>* node) const
     inorder(node->left);
     std::cout << node->data << ' ';
     inorder(node->right);
-    
-    
-    // inorder(node->left, height + 1);
-    // std::cout << std::string(height, ' ') << node->data << ' ';
-    
-    // std::string indent = "";
-    // for (int i = 1; i < height; i++) {
-    //     indent += "    ";
-    // }
-        
-    // std::cout << '\n' << indent << node->data;
-    // inorder(node->right, height + 1);
 }
     
 template <typename T>
@@ -77,6 +88,7 @@ void BST<T>::display() const
 {
     std::cout << "Display:\n";
     display(root, 0);
+    std::cout << '\n';
 }
 
 template <typename T>
@@ -91,7 +103,7 @@ void BST<T>::display(BTNode<T>* node, int space) const
 
     std::cout << '\n';
     for (int i = count; i < space; i++) std::cout << ' ';
-    std::cout << node->data << '\n';
+    std::cout << node->data;
 
     display(node->left, space);
 }
@@ -106,10 +118,42 @@ template <typename T>
 int BST<T>::getFurthestDepth(BTNode<T>* node)
 {
     if (!node) return 0;
-
+    
     int lDepth = getFurthestDepth(node->left);
     int rDepth = getFurthestDepth(node->right);
-
+    
     return std::max(lDepth, rDepth) + 1;
 }
 
+template <typename T>
+bool BST<T>::isFullTree() const
+{
+    return isFullTree(root);
+}
+
+template <typename T>
+bool BST<T>::isFullTree(BTNode<T>* node) const
+{
+    if (!node) return true;
+    if (node->hasOneChild()) return false;
+    return isFullTree(node->left) && isFullTree(node->right);
+}
+
+template <typename T>
+BTNode<T>* BST<T>::search(const T& val) const
+{
+    BTNode<T>* cur = root;
+    while (cur) {
+        if (cur->data == val) { // found the value
+            return cur;
+        }
+        else if (cur->data > val) { // value is less than cur
+            cur = cur->left;
+        }
+        else {
+            cur = cur->right;
+        }
+    }
+
+    return nullptr;
+}
