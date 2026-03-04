@@ -292,15 +292,49 @@ void BST<T>::print(const std::string& prefix, BTNode<T>* node, bool isRight) con
     if (!node) return;
     std::cout << prefix;
     if (node != root) {
-        std::cout << (isRight ? "R--" : "L--");
+        std::cout << (isRight ? "R----" : "L----");
     } else {
-        std::cout << "---";
+        std::cout << "-----";
     }
-
+    
     // print the value of the node
-    std::cout << node->data << std::endl;
-
+    std::cout << '[' << node->data << ", " << getHeight(node) << ", " << getBalance(node) << ']' << std::endl;
+    
     // go to the next level of the tree
-    print(prefix + "   ", node->right, true);
-    print(prefix + "   ", node->left, false);
+    print(prefix + "     ", node->right, true);
+    print(prefix + "     ", node->left, false);
+}
+
+template <typename T>
+int BST<T>::getHeight(const BTNode<T>* node) const
+{
+    if (!node) {
+        return 0;
+    }
+    
+    int left_height = getHeight(node->left);
+    int right_height = getHeight(node->right);
+    
+    return (left_height > right_height) ? left_height + 1 : right_height + 1;
+}
+
+template <typename T>
+int BST<T>::getBalance(const BTNode<T>* node) const
+{
+    if (!node) {
+        return 0;
+    }
+    return getHeight(node->left) - getHeight(node->right);
+}
+
+template <typename T>
+void BST<T>::rotateRight(BTNode<T>* & node)
+{
+    if (!node || !node->left) {
+        return;
+    }
+    BTNode<T>* left_child = node->left;
+    node->left = left_child->right;
+    left_child->right = node;
+    node = left_child;
 }

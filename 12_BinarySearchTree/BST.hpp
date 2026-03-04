@@ -26,6 +26,9 @@ public:
     BTNode<T>* searchParent(const T& val) const;
     void deleteNode(const T& val);
     void print() const;
+    int getHeight(const BTNode<T>* node) const;
+    int getBalance(const BTNode<T>* node) const;
+    void rotateRight(BTNode<T>* & node);
     
 private:
     BTNode<T>* root;

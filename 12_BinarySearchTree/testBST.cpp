@@ -50,13 +50,18 @@ int main(void)
     tree.insert(1);
     tree.insert(3);
     tree.insert(4);
+    tree.insert(6);
 
     tree.print();
+
+    BTNode<int>* t = tree.search(2); // TODO: check with search as argument
+    tree.rotateRight(t);
+    tree.print();
     
-    tree.deleteNode(2);
-    tree.print();
-    tree.deleteNode(3);
-    tree.print();
+    // tree.deleteNode(2);
+    // tree.print();
+    // tree.deleteNode(3);
+    // tree.print();
 
     // TODO fix getMinNode
 
