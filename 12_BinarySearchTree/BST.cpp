@@ -132,11 +132,20 @@ bool BST<T>::isFullTree() const
 }
 
 template <typename T>
-bool BST<T>::isFullTree(BTNode<T>* node) const
+bool BST<T>::isFullTree(BTNode<T>* node) const // TODO fix
 {
     if (!node) return true;
-    if (node->hasOneChild()) return false;
-    return isFullTree(node->left) && isFullTree(node->right);
+
+    // if leaf, it's full
+    if (!node->hasOneChild() && !node->right) return true;
+
+    // has both children
+    if (node->left && node->right) {
+        return isFullTree(node->left) && isFullTree(node->right);
+    }
+
+    // only one child, so not full tree
+    return false;
 }
 
 template <typename T>
@@ -161,7 +170,8 @@ BTNode<T>* BST<T>::search(const T& val) const
 template <typename T>
 BTNode<T>* BST<T>::getMinNode(BTNode<T>* source) const
 {
-    BTNode<T>* node;
+    if (!source) return nullptr;
+    BTNode<T>* node = source;
     while (node->left != nullptr)
         node = node->left;
     
@@ -171,37 +181,39 @@ BTNode<T>* BST<T>::getMinNode(BTNode<T>* source) const
 template <typename T>
 BTNode<T>* BST<T>::searchParent(const T& val) const
 {
-    if (root->data == val)
-    return nullptr;
+    if (!root || root->data == val)
+        return nullptr;
     
     BTNode<T>* cur = root;
     while (cur) {
-        if (cur->data == val) { // Found the value
+        if ((cur->left && cur->left->data == val) || (cur->right && cur->right->data == val)) {
             return cur;
         }
-        else if (cur->left->data == val || cur->right->data == val)
-        {
-            return cur;
-        }
-        else if (cur->left->data > val) { // Value is less than current
-            cur = cur->left;
-        }
-        else {
-            cur = cur->right;
-        }
+
+        // move down tree
+        if (cur->data > val) cur = cur->left;
+        else cur = cur->right;
     }
-    
+
     return nullptr;
 }
 
 template <typename T>
 void BST<T>::deleteLeaf(BTNode<T>* child, BTNode<T>* parent)
 {
+    BTNode<T>* gc = (child->left != nullptr) ? child->left : child->right;
+
     if (child == root)
     {
         root = nullptr;
-        delete child;
+        // root = gc;
+        // delete child;
     }
+    // else {
+    //  if (parent->left == child) parent->left = gc;
+    // else parent->right = gc;
+    // }
+    // delete child;
 
     if (parent->left == child)
     {
@@ -220,20 +232,18 @@ void BST<T>::deleteLeaf(BTNode<T>* child, BTNode<T>* parent)
 template <typename T>
 void BST<T>::deleteNodeWithOneChild(BTNode<T>* child, BTNode<T>* parent)
 {
-    BTNode<T>* tChild = parent;
-    
-    if (child == root)
-    {
-        root = nullptr;
-        delete child;
+    if (child == root) {
+        BTNode<T>* to_delete = root;
+        root = (root->left) ? root->left : root->right;
+        delete to_delete;
+        return;
     }
-    
-    if (parent->left == nullptr)
-    {
-        tChild = child->right;
-    } 
-    else {
-        tChild = child->left;
+    BTNode<T>* grand_kid = (child->right) ? child->right : child->left;
+    if (parent->right == child) {
+        parent->right = grand_kid;
+    }
+    if (parent->left == child) {
+        parent->left = grand_kid;
     }
     
     delete tChild;
@@ -337,4 +347,128 @@ void BST<T>::rotateRight(BTNode<T>* & node)
     node->left = left_child->right;
     left_child->right = node;
     node = left_child;
+}
+
+template <typename T>
+void BST<T>::rotateRightAt(const T& val)
+{
+    if (!root) return;
+
+    if (root->data == val) {
+        rotateRight(root);
+        return;
+    }
+
+    // find parent so actual ptr variable can be passed by reference
+    BTNode<T>* parent = searchParent(val);
+    if (!parent) return;
+
+    if (parent->left && parent->left->data == val) {
+        rotateRight(parent->left);
+    }
+    else if (parent->right && parent->right->data == val) {
+        rotateRight(parent->right);
+    }
+
+}
+
+template <typename T>
+BTNode<T>*& BST<T>::searchRef(const T& val) {
+    return searchRef(val, root);
+}
+
+template <typename T>
+BTNode<T>*& BST<T>::searchRef(const T& val, BTNode<T>*& node) {
+    if (!node || node->data == val) {
+        return node;
+    }
+    else if (node->data > val) {
+        return searchRef(val, node->left);
+    }
+    else {
+        return searchRef(val, node->right);
+    }
+}
+
+template <typename T>
+void BST<T>::rotateRightRef(BTNode<T>*& node) {
+    if (!node || !node->left) {
+        return;
+    }
+    BTNode<T>* left_kid = node->left;
+    node->left = left_kid->right;
+    left_kid->right = node;
+    
+    node = left_kid;
+}
+
+template <typename T>
+void BST<T>::rotateLeftRef(BTNode<T>*& node) {
+    if (!node || !node->right) {
+        return;
+    }
+    BTNode<T>* right_kid = node->right;
+    node->right = right_kid->left;
+    right_kid->left = node;
+    
+    node = right_kid;
+}
+
+
+template <typename T>
+void BST<T>::rotateLeftDoubleRef(BTNode<T>*& node) {
+    if (!node || !node->right) {
+        return;
+    }
+    rotateRightRef(node->right);
+    rotateLeftRef(node);
+}
+
+template <typename T>
+void BST<T>::rotateRightDoubleRef(BTNode<T>*& node) {
+    if (!node || !node->left) {
+        return;
+    }
+    rotateLeftRef(node->left);
+    rotateRightRef(node);
+}
+
+
+template <typename T>
+void BST<T>::balance() {
+    balance(root);
+}
+
+template <typename T>
+void BST<T>::balance(BTNode<T>*& node) {
+    if (!node) {
+        return;
+    }
+    int left_height = getHeight(node->left);
+    int right_height = getHeight(node->right);
+    if (left_height - right_height > 1) { //left unbalanced
+        if(getHeight(node->left->left) >= getHeight(node->left->right)) {
+            rotateRightRef(node);
+        }
+        else {
+            rotateRightDoubleRef(node);
+        }
+    }
+    if (right_height - left_height > 1) { //right unbalanced
+        if(getHeight(node->right->right) >= getHeight(node->right->left)) {
+            rotateLeftRef(node);
+        }
+    }
+    balance(node->left);
+    balance(node->right);
+}
+
+template <typename T>
+int BST<T>::count_leafs(BTNode<T>* node)
+{
+    if (!node) return 0;
+    else if (node->isLeaf()) {
+        return 1;
+    }
+    return count_leafs(node->left) + count_leafs(node->right);
 }

@@ -24,12 +24,28 @@ public:
     BTNode<T>* search(const T& val) const;
     BTNode<T>* getMinNode(BTNode<T>* source) const;
     BTNode<T>* searchParent(const T& val) const;
+    BTNode<T>*& searchRef(const T& val);
     void deleteNode(const T& val);
     void print() const;
     int getHeight(const BTNode<T>* node) const;
     int getBalance(const BTNode<T>* node) const;
     void rotateRight(BTNode<T>* & node);
+    int count_leafs(BTNode<T>* node);
+
+    BTNode<T>* getRoot() { return root; }
     
+    // Tree rotations
+    void rotateRightAt(const T& val);
+    void rotateRightRef(BTNode<T>*& node);
+    void rotateLeftRef(BTNode<T>*& node);
+    
+    void rotateLeftDoubleRef(BTNode<T>*& node);
+    void rotateRightDoubleRef(BTNode<T>*& node);
+     
+    BTNode<T>*& searchRef(const T& val, BTNode<T>*& node);
+    BTNode<T>* rotateRight(BTNode<T>* node);
+    
+    void balance(BTNode<T>*& node);
 private:
     BTNode<T>* root;
     
@@ -42,6 +58,7 @@ private:
     bool isFullTree(BTNode<T>* node) const;
     BTNode<T>* insert_recursive(BTNode<T>* node, const T& val);
     void print(const std::string& prefix, BTNode<T>* node, bool isRight) const;
+    void balance();
 };
 
 #endif
