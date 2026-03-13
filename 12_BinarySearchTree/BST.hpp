@@ -43,7 +43,7 @@ public:
     void rotateRightDoubleRef(BTNode<T>*& node);
      
     BTNode<T>*& searchRef(const T& val, BTNode<T>*& node);
-    BTNode<T>* rotateRight(BTNode<T>* node);
+    // BTNode<T>* rotateRight(BTNode<T>* node);
     
     void balance(BTNode<T>*& node);
 private:

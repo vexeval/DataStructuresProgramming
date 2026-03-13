@@ -132,7 +132,7 @@ bool BST<T>::isFullTree() const
 }
 
 template <typename T>
-bool BST<T>::isFullTree(BTNode<T>* node) const // TODO fix
+bool BST<T>::isFullTree(BTNode<T>* node) const
 {
     if (!node) return true;
 
@@ -246,7 +246,7 @@ void BST<T>::deleteNodeWithOneChild(BTNode<T>* child, BTNode<T>* parent)
         parent->left = grand_kid;
     }
     
-    delete tChild;
+    delete child;
 }
 
 template <typename T>
