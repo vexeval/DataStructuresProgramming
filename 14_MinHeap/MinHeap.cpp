@@ -11,10 +11,25 @@ void MinHeap<T>::insert(const T& val)
 template <typename T>
 void MinHeap<T>::print() const 
 {
-    for (const T& el : data) {
-        std::cout << el << ' ';
+    int cur_lvl = 0;
+    int new_lvl = 1;
+
+    for (int i = 0; i < data.size(); i++)
+    {
+        std::cout << data[i] << ' ';
+        cur_lvl++;
+        if (cur_lvl == new_lvl) {
+            std::cout << std::endl;
+            new_lvl *= 2;
+            cur_lvl = 0;
+        }
     }
     std::cout << std::endl;
+
+    // for (const T& el : data) {
+    //     std::cout << el << ' ';
+    // }
+    // std::cout << std::endl;
 }
 
 template <typename T>
@@ -27,5 +42,62 @@ void MinHeap<T>::percolateUp()
         std::swap(data[child_idx], data[parent_idx]);
         child_idx = parent_idx;
         parent_idx = (child_idx - 1) / 2;
+    }
+}
+
+template <typename T>
+int MinHeap<T>::getLeftKidIndex(int i) {
+    return i * 2 + 1;
+}
+
+template <typename T>
+int MinHeap<T>::getRightKidIndex(int i) {
+    return i * 2 + 2;
+}
+
+template <typename T>
+int MinHeap<T>::getParentIndex(int i) {
+    return (i - 1) / 2;
+}
+
+template <typename T>
+int MinHeap<T>::getLastWithKidsIndex() {
+    return data.size() / 2 - 1;
+}
+
+template <typename T>
+T MinHeap<T>::deleteMin()
+{
+    if (data.empty()) {
+        throw std::logic_error("deleteMin: empty heap");
+    }
+    T res = data[0];
+    data[0] = data[data.size() - 1]; // set the last element as the root
+    data.pop_back(); // remove the last element
+    
+    percolateDown();
+    return res;
+}
+
+template <typename T>
+void MinHeap<T>::percolateDown()
+{
+    int index = 0;
+    int size = data.size();
+
+    while (getLeftKidIndex(index) < size) {
+        int left = getLeftKidIndex(index);
+        int right = getRightKidIndex(index);
+
+        int smallest = left;
+        // has 2 kids
+        if (right < size && data[right] < data[left]) {
+            smallest = right;
+        }
+        if (data[index] < data[smallest]) {
+            break;
+        }
+        std::swap(data[index], data[smallest]);
+        index = smallest;
     }
 }
