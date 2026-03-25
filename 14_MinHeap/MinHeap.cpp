@@ -1,5 +1,27 @@
 #include "MinHeap.hpp"
 #include <iostream>
+#include <vector>
+
+template <typename T>
+MinHeap<T>::MinHeap()
+{
+    
+}
+
+template <typename T>
+MinHeap<T>::MinHeap(const std::vector<T>& v) : data(v)
+{
+    heapify();
+}
+
+template <typename T>
+void MinHeap<T>::heapify()
+{
+    for (int i = getLastWithKidsIndex(); i >= 0; i--)
+    {
+        percolateDown(i);
+    }
+}
 
 template <typename T>
 void MinHeap<T>::insert(const T& val) 
@@ -80,15 +102,15 @@ T MinHeap<T>::deleteMin()
 }
 
 template <typename T>
-void MinHeap<T>::percolateDown()
+void MinHeap<T>::percolateDown(int i)
 {
-    int index = 0;
+    int index = i;
     int size = data.size();
-
+    
     while (getLeftKidIndex(index) < size) {
         int left = getLeftKidIndex(index);
         int right = getRightKidIndex(index);
-
+        
         int smallest = left;
         // has 2 kids
         if (right < size && data[right] < data[left]) {
