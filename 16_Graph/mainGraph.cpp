@@ -6,16 +6,33 @@ int main()
 {
     Graph<std::string> knowledge;
 
-    knowledge.insertVertex("AVL");
-    knowledge.insertVertex("BST");
-    knowledge.insertVertex("Trie");
-    knowledge.insertVertex("Heap");
+    knowledge.insertVertex("A");
+    knowledge.insertVertex("B");
+    knowledge.insertVertex("C");
+    knowledge.insertVertex("D");
+    knowledge.insertVertex("E");
+    knowledge.insertVertex("F");
+    knowledge.insertVertex("G");
+    knowledge.insertVertex("S");
+    knowledge.insertVertex("H");
 
-    knowledge.insertEdge("BST", "AVL");
-    knowledge.insertEdge("BST", "Trie");
-    knowledge.insertEdge("BST", "Heap");
+    knowledge.insertEdge("A", "B");
+    knowledge.insertEdge("A", "S");
+    knowledge.insertEdge("C", "S");
+    knowledge.insertEdge("G", "S");
+    knowledge.insertEdge("C", "F");
+    knowledge.insertEdge("C", "E");
+    knowledge.insertEdge("C", "D");
+    knowledge.insertEdge("E", "H");
+    knowledge.insertEdge("G", "H");
+    knowledge.insertEdge("G", "F");
 
     knowledge.print();
+    knowledge.DFS();
+
+    // TODO:
+    // 1. Create a disconnected graph
+    // 2. Update DFS to traverse all the nodes of this graph
 
     return 0;
 }
