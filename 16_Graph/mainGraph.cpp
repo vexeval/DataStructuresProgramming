@@ -29,6 +29,11 @@ int main()
 
     knowledge.print();
     knowledge.DFS();
+    
+    // knowledge.BFS();
+
+    std::cout << "\nA, F " << knowledge.shortestPath("A", "F") << std::endl;
+    std::cout << "A, D " << knowledge.shortestPath("A", "D") << std::endl;
 
     // TODO:
     // 1. Create a disconnected graph

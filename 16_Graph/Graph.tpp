@@ -1,6 +1,7 @@
 #include "Graph.hpp"
 #include <iostream>
 #include <vector>
+#include <queue>
 
 template <typename T>
 int Graph<T>::getVertexIndex(const T& value) const
@@ -38,11 +39,32 @@ void Graph<T>::insertEdge(const T& v1, const T& v2)
         return;
     }
 
-    edges[i1].push_back(i2);
-    if (i1 != i2)
-    {
-        edges[i2].push_back(i1);
+    // edges[i1].push_back(i2);
+    // if (i1 != i2)
+    // {
+    //     edges[i2].push_back(i1);
+    // }
+    
+    if (!hasEdge(i1, i2)) {
+        edges[i1].push_back(i2);
+        if (i1 != i2) {
+            edges[i2].push_back(i1);
+        }
     }
+}
+
+template <typename T>
+bool Graph<T>::hasEdge(int i1, int i2) const
+{
+    if (i1 < 0 || i1 >= edges.size()) {
+        return false;
+    }
+
+    for (int i : edges[i1]) {
+        
+    }
+
+    return false;
 }
 
 template <typename T>
@@ -55,4 +77,115 @@ void Graph<T>::print() const
         }
         std::cout << "}\n";
     }
+}
+
+template <typename T>
+void Graph<T>::DFS() const
+{
+    if (vertices.empty()) {
+        return;
+    }
+
+    std::vector<bool> visited(vertices.size(), false);
+    DFS(0, visited);
+}
+
+template <typename T>
+void Graph<T>::DFS(int i, std::vector<bool>& visited) const
+{
+    visited[i] = true;
+    std::cout << vertices[i] << " -> ";
+    
+    // Look through all neighbors
+    for (int j : edges[i])
+    {
+        if (!visited[j]) {
+            DFS(j, visited);
+        }
+    }
+}
+
+template <typename T>
+void Graph<T>::BFS(int start) const
+{
+    if (vertices.empty() || start < 0 || start >= vertices.size()) {
+        return;
+    }
+    
+    std::vector<bool> discovered(vertices.size(), false);
+    std::queue<int> where_to_go;
+    
+    where_to_go.push(start);
+    discovered[start] = true;
+    
+    while (!where_to_go.empty()) {
+        int cur = where_to_go.front();
+        std::cout << vertices[cur];
+        where_to_go.pop();
+        
+        // explore neighbors
+        for (int j : edges[cur])
+        {
+            if (!discovered[j]) {
+                where_to_go.push(j);
+                discovered[j] = true;
+            }
+            
+        }
+    }
+    
+}
+
+template <typename T>
+int Graph<T>::shortestPath(const T& src, const T& dest) const
+{
+    // Find indices
+    int i_src = getVertexIndex(src);
+    int i_dest = getVertexIndex(dest);
+
+    // Check edge case
+    if (i_src == -1 || i_dest == -1) {
+        std::cout << "shortestPath: incorrect indices\n";
+        return -1;
+    }
+    if (i_src == i_dest) {
+        return 0;
+    }
+
+    // Create distances vector
+    std::vector<int> distances(vertices.size()); // distances from src to all other nodes
+    
+    // Set initial distances
+    for (int i = 0; i < distances.size(); i++) {
+        distances[i] = (i == i_src) ? 0 : -1;
+    }
+
+    // Perform BFS and update distances
+    std::queue<int> q;
+    q.push(i_src);
+
+    while (!q.empty()) {
+        int cur = q.front();
+        q.pop();
+
+        // Check th neighbors of current
+        for (int i : edges[cur]) {
+            if (distances[i] == -1) {
+                distances[i] = distances[cur] + 1;
+                q.push(i);
+            }
+            if (i == i_dest) {
+                // found it
+                return distances[i];
+            }
+        }
+    }
+
+    return -1; // no path exists
+}
+
+template <typename T>
+bool Graph<T>::isConnected() const
+{
+
 }
