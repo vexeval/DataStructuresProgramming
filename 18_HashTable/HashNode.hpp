@@ -8,7 +8,6 @@ public:
 
     K key;
     V value;
-
 };
 
 #endif

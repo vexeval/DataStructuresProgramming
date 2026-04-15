@@ -6,11 +6,25 @@
 template <typename K, typename V>
 class HashMap {
 public:
-    HashMap();
+    HashMap(int size = 31);
+
+    bool empty() const;
+    bool full() const;
+
+    void insert(const K& key, const V& value);
+    void print() const;
+    const V& search(const K& key) const; // TODO. if key doesn't exist, throw exception.
 
 private:
     std::vector<HashNode<K, V>*> data;
-    int n; // size of the table
+    int n; // number of records in the table
+
+    HashNode<K, V>* deleted;
+
+    int hash(const K& key) const;
+    int searchIndex(const K& key) const;
 };
+
+#include "HashMap.tpp"
 
 #endif
