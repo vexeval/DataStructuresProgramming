@@ -1,5 +1,6 @@
 #include "HashMap.hpp"
 #include <iostream>
+#include <stdexcept>
 
 template <typename K, typename V>
 HashMap<K, V>::HashMap(int size) : n(0)
@@ -61,6 +62,41 @@ void HashMap<K, V>::print() const {
 template <typename K, typename V>
 int HashMap<K, V>::searchIndex(const K& key) const {
     // do not search through whole data, instead convert key into hash and look at position. if key == key, then we got it. If not, keep going.
+    int index = hash(key);
+    while (data[index] != nullptr)
+    {
+        if (data[index]->key == key) {
+            return index;
+        }
+
+        index++;
+    }
+
     // if nullptr, stop
     // return -1 if not there
+    return -1;
 }
+
+template <typename K, typename V>
+const V& HashMap<K, V>::search(const K& key) const {
+    int idx = searchIndex(key);
+
+    if (idx == -1)
+    {
+        throw 5;
+
+    }
+    else
+        return data[idx]->value;
+}
+
+template <typename K, typename V>
+void HashMap<K, V>::remove(const K& key) {
+    int idx = searchIndex(key);
+    
+    if (idx == -1)
+        return;
+    
+    data[idx] = deleted;
+}
+

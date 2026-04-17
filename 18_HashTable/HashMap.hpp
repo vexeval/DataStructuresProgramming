@@ -14,6 +14,7 @@ public:
     void insert(const K& key, const V& value);
     void print() const;
     const V& search(const K& key) const; // TODO. if key doesn't exist, throw exception.
+    void remove(const K& key);
 
 private:
     std::vector<HashNode<K, V>*> data;
