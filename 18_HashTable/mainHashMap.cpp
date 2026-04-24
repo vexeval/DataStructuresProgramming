@@ -24,7 +24,7 @@ int main()
         try {
             code += map->search(keys[i]);
         }
-        catch (int e) {
+        catch (std::exception e) {
             continue;
         }
     }

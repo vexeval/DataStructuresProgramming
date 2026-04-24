@@ -11,6 +11,17 @@ HashMap<K, V>::HashMap(int size) : n(0)
 }
 
 template <typename K, typename V>
+HashMap<K, V>::~HashMap()
+{
+    for (int i = 0; i < data.size(); i++) {
+        if (data[i] && data[i] != deleted)
+            delete data[i];
+    }
+
+    delete deleted;
+}
+
+template <typename K, typename V>
 bool HashMap<K, V>::empty() const {
     return n == 0;
 }
@@ -62,14 +73,18 @@ void HashMap<K, V>::print() const {
 template <typename K, typename V>
 int HashMap<K, V>::searchIndex(const K& key) const {
     // do not search through whole data, instead convert key into hash and look at position. if key == key, then we got it. If not, keep going.
+    int counter = 0;
     int index = hash(key);
+
     while (data[index] != nullptr)
     {
+        if (counter++ > data.size()) {
+            return -1;
+        }
         if (data[index]->key == key) {
             return index;
         }
-
-        index++;
+        index = (index + 1) % data.size();
     }
 
     // if nullptr, stop
@@ -83,10 +98,8 @@ const V& HashMap<K, V>::search(const K& key) const {
 
     if (idx == -1)
     {
-        throw 5;
-
+        throw std::logic_error("search: the key doesn't exist");
     }
-    else
         return data[idx]->value;
 }
 
@@ -97,6 +110,8 @@ void HashMap<K, V>::remove(const K& key) {
     if (idx == -1)
         return;
     
+    delete data[idx];
     data[idx] = deleted;
+    n--;
 }
 

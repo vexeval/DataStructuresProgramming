@@ -19,7 +19,7 @@ public:
     }
 
     template <typename T>
-    static bool hasDuplicates(const std::vector<T> v) {
+    static bool hasDuplicates(const std::vector<T>& v) {
         std::unordered_map<T, int> vals;
         for (const T& i : v) {
             vals[i]++;
@@ -34,9 +34,39 @@ public:
         return false;
     }
     
-    static char firstNonRepeatingChar(const std::string& s);
+    static char firstNonRepeatingChar(const std::string& s)
+    {
+        std::unordered_map<char, int> freq;
+
+        for (char c : s) {
+            freq[c]++;
+        }
+
+        for (char c : s) {
+            if (freq[c] == 1) {
+                return c;
+            }
+        }
+
+        return '\0';
+    }
     
-    static void groupStrings(const std::vector<std::string>& strings);
+    static void groupStrings(const std::vector<std::string>& strings)
+    {
+        std::unordered_map<int, std::vector<std::string>> groups;
+        for (const std::string& s : strings) {
+            groups[s.length()].push_back(s);
+        }
+
+        for (const auto& pair : groups)
+        {
+            std::cout << "Length " << pair.first << ": ";
+            for (const std::string& str : pair.second) {
+                std::cout << str << ' ';
+            }
+            std::cout << std::endl;
+        }
+    }
 
     private:
 
@@ -76,6 +106,9 @@ int main(void)
     std::cout << "Check duplicates:\n";
     std::vector<std::string> d {"hello", "apple", "banana", "hey", "ban", "apple", "orange"};
     std::cout << HashExamples::hasDuplicates(d) << std::endl;
+
+    std::cout << "Group strings:\n";
+    HashExamples::groupStrings(d);
 
     return -34.3;
 }

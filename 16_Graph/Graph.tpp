@@ -38,12 +38,6 @@ void Graph<T>::insertEdge(const T& v1, const T& v2)
         std::cout << "insertEdge: incorrect vertices\n";
         return;
     }
-
-    // edges[i1].push_back(i2);
-    // if (i1 != i2)
-    // {
-    //     edges[i2].push_back(i1);
-    // }
     
     if (!hasEdge(i1, i2)) {
         edges[i1].push_back(i2);
@@ -61,7 +55,9 @@ bool Graph<T>::hasEdge(int i1, int i2) const
     }
 
     for (int i : edges[i1]) {
-        
+        if (i == i2) {
+            return true;
+        }
     }
 
     return false;
@@ -187,5 +183,5 @@ int Graph<T>::shortestPath(const T& src, const T& dest) const
 template <typename T>
 bool Graph<T>::isConnected() const
 {
-
+    return false; // TODO IMPLEMENT
 }

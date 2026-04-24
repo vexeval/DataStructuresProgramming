@@ -7,6 +7,7 @@ template <typename K, typename V>
 class HashMap {
 public:
     HashMap(int size = 31);
+    ~HashMap();
 
     bool empty() const;
     bool full() const;
