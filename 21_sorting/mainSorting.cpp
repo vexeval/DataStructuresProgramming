@@ -12,14 +12,17 @@ void print(const std::vector<T>& v) {
 
 
 int main() {
-    std::vector<std::string> strings {"xyz", "abc", "the", "dog", "cat"};
-    std::vector<int> ints {43, 2, -2, 94, 934};
+    std::vector<std::string> strings {"xyz", "abc", "re", "the", "start", "hash", "graph", "dog", "cat"};
+    // std::vector<int> ints {43, 2, -2, 94, 934};
 
-    Sorting::mergeSort(strings);
-    Sorting::mergeSort(ints);
+    // Sorting::mergeSort(strings);
+    // Sorting::mergeSort(ints);
+    Sorting::quickSort(strings);
 
-    print(strings);
-    print(ints);
+    // print(strings);
+    std::cout << strings[5] + strings[4] << std::endl;
+
+    // print(ints);
 
     return 0;
 }

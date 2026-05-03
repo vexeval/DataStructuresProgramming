@@ -8,7 +8,6 @@ void Sorting::selectionSort(std::vector<T>& v) {
     
     for (int i = 0; i < size; i++) {
         int minIndex = i;
-        // TODO Find the minIndex
         for (int j = i + 1; j <= size; j++) {
             if (v[j] < v[minIndex]) {
                 minIndex = j;
@@ -86,4 +85,45 @@ void Sorting::merge(std::vector<T>& v, int left, int mid, int right) {
         i++;
         k++;
     }
+}
+
+template <typename T>
+int Sorting::partition(std::vector<T>& v, int left, int right)
+{
+    T pivot = v[right];
+    int r = right - 1;
+
+    while (left <= right) {
+        // swap
+        if (v[left] > pivot && v[r] < pivot) {
+            std::swap(v[left], v[r]);
+        }
+        // move the iterators
+        if (v[left] <= pivot) {
+            left++;
+        }
+        if (v[right] >= pivot) {
+            r--;
+        }
+    }
+    std::swap(v[left], v[right]);
+    return left;
+}
+
+template <typename T>
+void Sorting::quickSort(std::vector<T>& v, int left, int right)
+{
+    if (left >= right) {
+        return;
+    }
+    int pivot_index = partition(v, left, right);
+    // Call on the left side of the pivot
+    quickSort(v, left, pivot_index-1);
+    // Call on the right side of the pivot
+    quickSort(v, pivot_index+1, right);
+}
+
+template <typename T>
+void quickSort(std::vector<T>& v) {
+    quickSort(v, 0, v.size() - 1);
 }
